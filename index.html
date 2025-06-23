@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FundSaathi | Raise Help. Spread Hope.</title>
   <style>
     body {
@@ -11,12 +11,48 @@
       margin: 0;
       padding: 0;
     }
-    header {
+
+    .navbar {
       background: #1b4d3e;
+      padding: 15px 30px;
       color: white;
-      padding: 20px;
-      text-align: center;
     }
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1000px;
+      margin: auto;
+    }
+    .nav-left {
+      font-size: 1.8em;
+      font-weight: bold;
+    }
+    .nav-right a {
+      color: white;
+      margin-left: 20px;
+      text-decoration: none;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .nav-right a:hover {
+      text-decoration: underline;
+    }
+
+    .slogan-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 25px;
+      margin-top: 30px;
+      font-size: 2em;
+      font-weight: 700;
+      color: #1b4d3e;
+    }
+    .slogan-logo img {
+      height: 120px;
+    }
+
     .hero {
       text-align: center;
       padding: 60px 20px;
@@ -30,6 +66,7 @@
     .hero p {
       font-size: 1.2em;
     }
+
     .campaigns {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -66,41 +103,116 @@
       cursor: pointer;
       margin-top: 10px;
     }
+
     footer {
       background: #eee;
       text-align: center;
       padding: 20px;
       font-size: 0.9em;
       color: #555;
-    }    .slogan-logo {
-      display: flex;
+    }
+
+    /* Login/Signup Popup */
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: none;
       align-items: center;
       justify-content: center;
-      gap: 25px;
-      margin-top: 30px;
-      font-size: 2em;
-      font-weight: 700;
-      font-family: 'Segoe UI', sans-serif;
+    }
+    .popup {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 400px;
+      width: 90%;
+    }
+    .popup h2 {
+      margin-top: 0;
       color: #1b4d3e;
     }
-
-    .slogan-logo img {
-      height: 120px;
+    .popup input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .popup button {
+      width: 100%;
+      margin-top: 15px;
+      background: #1b4d3e;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 6px;
+      cursor: pointer;
     }
 
+    /* Fundraiser Form */
+    #fundraiser-form-section {
+      display: none;
+      padding: 40px;
+      background: #ffffff;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    #fundraiser-form-section h2 {
+      text-align: center;
+      color: #1b4d3e;
+      margin-bottom: 30px;
+    }
+
+    form {
+      display: grid;
+      gap: 20px;
+    }
+
+    form input, form textarea, form select {
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    form button {
+      background: #1b4d3e;
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1em;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-left">FundSaathi</div>
+      <div class="nav-right">
+        <a href="#">Home</a>
+        <a onclick="checkLogin()">Start a Fundraiser</a>
+        <a href="#">Explore</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+  </nav>
+
   <div class="slogan-logo">
-  <span>Raise Help.</span>
-  <img src="logo.png" alt="FundSaathi Logo">
-  <span>Spread Hope.</span>
-</div>
+    <span>Raise Help.</span>
+    <img src="logo.png" alt="FundSaathi Logo">
+    <span>Spread Hope.</span>
+  </div>
 
   <section class="hero">
     <h1>India's Crowdfunding Platform</h1>
     <p>FundSaathi helps people raise funds for medical emergencies, education, and more — for free.</p>
   </section>
+
   <section class="campaigns">
     <div class="card">
       <img src="https://via.placeholder.com/400x180" alt="Medical Help">
@@ -119,8 +231,70 @@
       </div>
     </div>
   </section>
+
+  <!-- Fundraiser Form Section -->
+  <section id="fundraiser-form-section">
+    <h2>Start a Fundraiser</h2>
+    <form>
+      <input type="text" placeholder="Your Name" required>
+      <input type="text" placeholder="Fundraiser Title" required>
+      <select required>
+        <option value="">Select Category</option>
+        <option value="medical">Medical</option>
+        <option value="education">Education</option>
+        <option value="other">Other</option>
+      </select>
+      <textarea rows="5" placeholder="Describe your fundraiser..." required></textarea>
+      <input type="number" placeholder="Target Amount (₹)" required>
+      <input type="file" accept="image/*">
+      <button type="submit">Submit Fundraiser</button>
+    </form>
+  </section>
+
+  <!-- Login/Signup Popup -->
+  <div class="overlay" id="loginOverlay">
+    <div class="popup">
+      <h2>Login or Sign Up</h2>
+      <input type="email" placeholder="Email" id="email">
+      <input type="password" placeholder="Password" id="password">
+      <button onclick="loginUser()">Continue</button>
+    </div>
+  </div>
+
   <footer>
     FundSaathi © 2025 · Built with ❤️ to help India raise hope.
   </footer>
+
+  <script>
+    function checkLogin() {
+      const isLoggedIn = localStorage.getItem('userLoggedIn');
+      if (isLoggedIn) {
+        document.getElementById('fundraiser-form-section').style.display = 'block';
+        window.scrollTo(0, document.getElementById('fundraiser-form-section').offsetTop);
+      } else {
+        document.getElementById('loginOverlay').style.display = 'flex';
+      }
+    }
+
+    function loginUser() {
+      const email = document.getElementById('email').value;
+      const pass = document.getElementById('password').value;
+      if (email && pass) {
+        localStorage.setItem('userLoggedIn', true);
+        document.getElementById('loginOverlay').style.display = 'none';
+        document.getElementById('fundraiser-form-section').style.display = 'block';
+        window.scrollTo(0, document.getElementById('fundraiser-form-section').offsetTop);
+      } else {
+        alert('Please enter email and password.');
+      }
+    }
+
+    // Close popup when clicked outside
+    window.addEventListener('click', function(e) {
+      const overlay = document.getElementById('loginOverlay');
+      if (e.target === overlay) overlay.style.display = 'none';
+    });
+  </script>
+
 </body>
 </html>
